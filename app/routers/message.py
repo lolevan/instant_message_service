@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import Message, User
 from app.database import SessionLocal
 from datetime import datetime
+from app.tasks import celery_app
 from typing import List
 from sqlalchemy.future import select
 
@@ -27,7 +28,7 @@ async def send_message(sender_id: int, recipient_id: int, content: str, db: Asyn
     message = Message(sender_id=sender_id, recipient_id=recipient_id, content=content, timestamp=datetime.utcnow())
     db.add(message)
     await db.commit()
-    # celery_app.send_task("tasks.notify_user", args=[recipient.telegram_id, content])
+    celery_app.send_task("tasks.notify_user", args=[recipient.telegram_id, content])
     return {"msg": "Message sent"}
 
 
