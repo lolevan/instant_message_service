@@ -1,0 +1,10 @@
+fastapi
+sqlalchemy
+asyncpg
+pyjwt
+bcrypt
+celery
+aiogram
+uvicorn
+starlette
+pydantic
